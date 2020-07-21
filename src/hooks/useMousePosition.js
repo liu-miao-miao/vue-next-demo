@@ -19,5 +19,5 @@ export function useMousePosition() {
     window.removeEventListener("mousemove", getPosition);
   });
 
-  return { ...toRefs(state) };
+  return toRefs(state);
 }

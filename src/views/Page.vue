@@ -38,6 +38,9 @@ export default {
     const watchRef = ref(0);
     const state = reactive({
       stateValue: 0,
+      userInfo: {
+        name: "1",
+      },
     });
 
     onBeforeMount(() => {
@@ -88,9 +91,28 @@ export default {
       }
     );
 
+    // 监听多个
+    watch(
+      [() => count.value, () => state.stateValue],
+      ([count, state], [prevCount, prevState]) => {
+        console.log(count, prevCount);
+        console.log(state, prevState);
+      }
+    );
+
     const computedRefAndReactive = computed(
       () => count.value + state.stateValue
     );
+
+    //传入对象自定义get set的形式
+    const _computedRefAndReactive = computed({
+      get() {
+        return count.value + state.stateValue;
+      },
+      set(val) {
+        count.value = val;
+      },
+    });
 
     return {
       x,
@@ -99,6 +121,7 @@ export default {
       watchRef,
       ...toRefs(state),
       computedRefAndReactive,
+      _computedRefAndReactive,
       ...methods,
     };
   },
